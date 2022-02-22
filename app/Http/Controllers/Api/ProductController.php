@@ -1,42 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $products = Product::orderBy('id', 'DESC');
 
-        return view('product.index')
-                ->with('products', $products->paginate(10))
-                ;
+        return response()->json(['products' => $products->paginate(10)]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function show(Product $product)
     {
-        return view('product.create');
+        return response()->json(['product' => $product]);;
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
@@ -61,10 +57,13 @@ class ProductController extends Controller
             $product->save();
         }
 
-        \Session::flash('success', 'Product successfully created');
-        return redirect()->route('product.index');
+        return response()->json(['product' => $product]);
     }
 
+    /**
+     * @param $path
+     * @return array|string|string[]
+     */
     private function replacePublicByStorage($path)
     {
         $path = str_replace(
@@ -77,24 +76,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        return view('product.edit')
-                    ->with('product', $product)
-                    ;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Product $product
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function update(Request $request, Product $product)
     {
@@ -117,25 +102,27 @@ class ProductController extends Controller
             $product->save();
         }
 
-        \Session::flash('success', 'Product successfully updated');
-        return redirect()->route('product.index'); 
+        return response()->json(['product' => $product]);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request)
     {
         $product = Product::where('id', $request->product_id);
         $product->delete();
 
-        \Session::flash('success', 'Product successfully deleted');
-        return redirect()->route('product.index');
+        return response()->json(['message' => 'Succesfully deleted']);
     }
 
+    /**
+     * @param Product $product
+     * @param $data
+     * @return Product
+     * @throws \Exception
+     */
     private function save(Product $product, $data)
     {
         $product->fill($data);

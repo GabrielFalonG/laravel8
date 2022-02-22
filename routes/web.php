@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\Auth\LoginController;
 
 Route::prefix('')->namespace('Auth')->group(function () {
 
