@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="card-body">
-                        {!! Form::model($product, array('route' => array( 'product.update', $product->id), 'class' => 'form-horizontal')) !!}
+                        {!! Form::model($product, array('route' => array( 'product.update', $product->id), 'class' => 'form-horizontal', 'files' => true)) !!}
                             @method('PUT')
                             @include('product.shared.form', ['btn' => 'Edit', 'updating' => true])
                         {!! Form::close() !!}

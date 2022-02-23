@@ -41,11 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), Product::rules());
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $this->validate($request, Product::rules());
 
         $product = new Product();
         $data = $request->all();
@@ -54,7 +50,7 @@ class ProductController extends Controller
 
         if (isset($data['photo']) && $data['photo'] != null)
         {
-            $imgPath = 'public/user_' . $product->user->id . '/photos/product_' . $product->id;
+            $imgPath = 'public/photos/product_' . $product->id;
 
             $photoPathSaveInOBJ = $request->file('photo')->store($imgPath);
 
@@ -100,7 +96,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validator = Validator::make($request->all(), Product::rules($product));
-
+        
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -110,7 +106,7 @@ class ProductController extends Controller
 
         if (isset($data['photo']) && $data['photo'] != null)
         {
-            $imgPath = 'public/user_' . $product->user->id . '/photos/product_' . $product->id;
+            $imgPath = 'public/photos/product_' . $product->id;
 
             $photoPathSaveInOBJ = $request->file('photo')->store($imgPath);
 

@@ -14,6 +14,8 @@
 
 @endsection
 
+@include('layouts.messages')
+
     <div class="form-group row">
         <div class="col-md-9">
             <div class="form-group">
