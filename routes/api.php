@@ -24,6 +24,4 @@ Route::group(['prefix' => 'products', 'as' => 'api.product.'], function () {
     Route::get('', [ProductController::class, 'index'])->name('index');
     Route::get('show/{product}', [ProductController::class, 'show'])->name('show');
     Route::post('store', [ProductController::class, 'store'])->name('store');
-    Route::put('update/{product}', [ProductController::class, 'update'])->name('update');
-    Route::delete('destroy', [ProductController::class, 'destroy'])->name('destroy');
 });
